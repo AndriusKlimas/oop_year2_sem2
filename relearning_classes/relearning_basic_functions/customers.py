@@ -6,14 +6,16 @@ class Customers:
 
 
     def __str__(self):
-        print(f"self.username, self.email")
+        print(f"get_username(), get_email()")
 
     def display(self):
-        print(f"self.username, self.email")
+        print(f"get_username(), get_email()")
 
     def __repr__(self):
-        print(f"self.username, self.email, self.__password")
+        print(f"get_username(), get_email(), get_password()")
 
+
+#better practices for encapsulation
     def get_password(self):
         return self.__password
 
