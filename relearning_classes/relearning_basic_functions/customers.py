@@ -67,6 +67,11 @@ class Customers:
             print("Password must contain at least one lowercase letter.")
             return False
 
+        number_check = any(char.isdigit() for char in password)
+        if not number_check:
+            print("Password must contain at least one number.")
+            return False
+
         return True
 
     #email validation method
