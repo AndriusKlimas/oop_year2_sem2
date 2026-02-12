@@ -22,6 +22,40 @@ class Customers:
     def __repr__(self):
         print(f"get_username(), get_email(), get_password()")
 
+    def __lt__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+
+        return self._username < other._username
+
+    def __gt__ (self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+
+        return self._username > other._username
+
+    def __le__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+
+        return self._username <= other._username
+
+    def __ge__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+
+        return self._username >= other._username
+
+    def __eq__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+
+        return self._username == other._username
+
+    def __ne__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Customers):
+            return NotImplemented
+        return self._username != other._username
 
 #better practices for encapsulation
     def get_password(self):

@@ -28,6 +28,26 @@ class Products:
         print(f"Product ID: {self.prod_id}, Name: {self.name}, Unit Price: {self.unit_price}, Stock: {self.stock}")
 
 
+    def __lt__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Products):
+            return NotImplemented
+        return self.unit_price < other.unit_price
+
+    def __le__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Products):
+            return NotImplemented
+        return self.unit_price <= other.unit_price
+
+    def __gt__(self, other: object) -> bool | NotImplementedType:
+        if not isinstance(other, Products):
+            return NotImplemented
+        return self.unit_price > other.unit_price
+
+    def __ge__(self, other:object) -> bool | NotImplementedType:
+        if not isinstance(other, Products):
+            return NotImplemented
+        return self.unit_price >= other.unit_price
+
     @staticmethod
     def validate_unit_price(unit_price):
         if unit_price is None:
