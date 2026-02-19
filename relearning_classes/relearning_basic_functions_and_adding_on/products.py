@@ -52,6 +52,8 @@ class Products:
     def validate_unit_price(unit_price):
         if unit_price is None:
             return False
+        if isinstance(unit_price, int) or isinstance(unit_price, float):
+            return True
         if unit_price < 0:
             return False
         return True
@@ -79,3 +81,5 @@ class Products:
         if len(str(prod_id).strip()) == 0:
             return False
         return True
+
+
