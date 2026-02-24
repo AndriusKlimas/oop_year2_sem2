@@ -13,21 +13,51 @@ def display(data):
 
 # Ask user to enter a filename
 filename = input("Please enter the inventory filename: ")
-with open(filename, "r") as file_handle:
-    # Read content of file in and store in a list of content
-    for line in file_handle:
-        line = line.strip()
-        components = line.split("%%")
-        data = []
-        data.append(components[1])
-        data.append(components[2])
-        data.append(float(components[3]))
-        data.append(float(components[4]))
-        data.append(int(components[5]))
-        if components[0] == "Book":
-            data.append(components[6])
-            genres = components[7].split("&&")
-            data.append(genres)
+try:
+#File not found
+    with open(f"{filename}.txt", "r") as file_handle:
 
-        # Display data for this line
-        display(data)
+        # Read content of file in and store in a list of content
+        for line in file_handle:
+            line = line.strip()
+            # the %% done exist
+            components = line.split("%%")
+            data = []
+            try:
+                data.append(components[1])
+            except IndexError as e:
+                print("Component not found")
+                quit()
+            try:
+                data.append(components[2])
+            except IndexError as e:
+                print("Component not found")
+                quit()
+
+            try:
+                data.append(float(components[3]))
+            except IndexError as e:
+                print("Component not found")
+                quit()
+
+            try:
+                data.append(float(components[4]))
+            except IndexError as e:
+                print("Component not found")
+                quit()
+
+            try:
+                data.append(float(components[5]))
+            except IndexError as e:
+                print("Component not found")
+                quit()
+
+            if components[0] == "Book":
+                data.append(components[6])
+                #&& are mission
+                genres = components[7].split("&&")
+                data.append(genres)
+            # Display data for this line
+            display(data)
+except FileNotFoundError as e:
+    print("File not found")
