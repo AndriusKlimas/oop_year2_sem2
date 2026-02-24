@@ -36,30 +36,31 @@ while not valid:
                     data.append(components[1])
                 except IndexError as e:
                     print("Component not found")
-                    quit()
+                    continue
+
                 try:
                     data.append(components[2])
                 except IndexError as e:
                     print("Component not found")
-                    quit()
+                    continue
 
                 try:
                     data.append(float(components[3]))
                 except IndexError as e:
                     print("Component not found")
-                    quit()
+                    continue
 
                 try:
                     data.append(float(components[4]))
                 except IndexError as e:
                     print("Component not found")
-                    quit()
+                    continue
 
                 try:
                     data.append(float(components[5]))
                 except IndexError as e:
                     print("Component not found")
-                    quit()
+                    continue
 
                 if components[0] == "Book":
                     data.append(components[6])
