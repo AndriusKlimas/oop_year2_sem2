@@ -38,23 +38,33 @@ def add():
 
     print(num1 + num2)
 
-keepRunning = True
 
-while keepRunning:
+
+
+def display_menu():
     print("Choose from the following: ")
     print("1) Add two numbers")
     print("2) Multiply two numbers")
     print("exit to exit the calculate")
-    choice = input()
-    match(choice.lower()):
-        case "1":
-            add()
-        case "2":
-            multiply()
-        case "exit":
-            print("Goodbye!")
-            keepRunning = False
-            continue
-        case _:
-            print("Please enter a valid option from the menu")
+
+
+def Option_menu():
+    keepRunning = True
+    while keepRunning:
+        display_menu()
+        choice = input()
+        match (choice.lower()):
+            case "1":
+                add()
+            case "2":
+                multiply()
+            case "exit":
+                print("Goodbye!")
+                keepRunning = False
+                continue
+            case _:
+                print("Please enter a valid option from the menu")
+
+
+Option_menu()
 
