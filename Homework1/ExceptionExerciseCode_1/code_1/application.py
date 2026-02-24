@@ -69,5 +69,7 @@ while not valid:
                 # Display data for this line
                 display(data)
     except FileNotFoundError as e:
-        count = count + 1
-        print("File not found")
+        if count < 1:
+            print("File not found")
+        count += 1
+
