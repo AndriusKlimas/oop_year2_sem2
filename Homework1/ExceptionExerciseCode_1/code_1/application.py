@@ -11,53 +11,63 @@ def display(data):
         print(f"\tGenre(s): {data[6]}")
 
 
-# Ask user to enter a filename
-filename = input("Please enter the inventory filename: ")
-try:
-#File not found
-    with open(f"{filename}.txt", "r") as file_handle:
+valid = False
+count = 0
+while not valid:
+    print(f"Attempt {count}")
+    if count == 4:
+        print("You have 1 attempt left.")
+    if count == 5:
+        print("Shutting application down")
+        quit()
+    # Ask user to enter a filename
+    filename = input("Please enter the inventory filename: ")
+    try:
+    #File not found
+        with open(f"{filename}.txt", "r") as file_handle:
 
-        # Read content of file in and store in a list of content
-        for line in file_handle:
-            line = line.strip()
-            # the %% done exist
-            components = line.split("%%")
-            data = []
-            try:
-                data.append(components[1])
-            except IndexError as e:
-                print("Component not found")
-                quit()
-            try:
-                data.append(components[2])
-            except IndexError as e:
-                print("Component not found")
-                quit()
+            # Read content of file in and store in a list of content
+            for line in file_handle:
+                line = line.strip()
+                # the %% done exist
+                components = line.split("%%")
+                data = []
+                try:
+                    data.append(components[1])
+                except IndexError as e:
+                    print("Component not found")
+                    quit()
+                try:
+                    data.append(components[2])
+                except IndexError as e:
+                    print("Component not found")
+                    quit()
 
-            try:
-                data.append(float(components[3]))
-            except IndexError as e:
-                print("Component not found")
-                quit()
+                try:
+                    data.append(float(components[3]))
+                except IndexError as e:
+                    print("Component not found")
+                    quit()
 
-            try:
-                data.append(float(components[4]))
-            except IndexError as e:
-                print("Component not found")
-                quit()
+                try:
+                    data.append(float(components[4]))
+                except IndexError as e:
+                    print("Component not found")
+                    quit()
 
-            try:
-                data.append(float(components[5]))
-            except IndexError as e:
-                print("Component not found")
-                quit()
+                try:
+                    data.append(float(components[5]))
+                except IndexError as e:
+                    print("Component not found")
+                    quit()
 
-            if components[0] == "Book":
-                data.append(components[6])
-                #&& are mission
-                genres = components[7].split("&&")
-                data.append(genres)
-            # Display data for this line
-            display(data)
-except FileNotFoundError as e:
-    print("File not found")
+                if components[0] == "Book":
+                    data.append(components[6])
+                    #&& are mission
+                    genres = components[7].split("&&")
+                    data.append(genres)
+                # Display data for this line
+                display(data)
+    except FileNotFoundError as e:
+        count = count + 1
+        print("File not found")
