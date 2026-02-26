@@ -8,10 +8,12 @@ class Product:
         else:
             raise ValueError(error_msg)
 
-        if Product.name_validation(name):
+
+        valid, error_msg = Product.name_validation(name)
+        if valid:
             self._name = name
         else:
-            raise ValueError("Invalid product name")
+            raise ValueError(error_msg)
 
         if Product.cost_price_validation(cost_price):
             self.cost_price = cost_price
@@ -38,23 +40,23 @@ class Product:
             return False, "No ID present"
 
         else:
-            return True
+            return True, None
 
     @staticmethod
     def name_validation(name):
         if name is None:
-            return False
+            return False, "Name cannot be None"
         else:
-            return True
+            return True, None
 
     @staticmethod
     def cost_price_validation(cost_price):
         if cost_price is None:
-            return False
+            return False, "cost_price cannot be None"
         if cost_price < 0:
-            return False
+            return False, f"cost_price cannot be negative"
         else:
-            return True
+            return True, None
     '''
         Code for the Product class goes here
         Product has:
