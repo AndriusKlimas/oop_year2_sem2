@@ -1,36 +1,41 @@
 class Product:
     def __init__(self, id, name, cost_price, retail_price, quantity):
 
-        if Product.id_validation(id):
-            self.id = id
+
+        valid, error_msg = Product.id_validation(id)
+        if valid:
+            self._id = id
         else:
-            raise ValueError("Invalid product id")
+            raise ValueError(error_msg)
 
         if Product.name_validation(name):
-            self.name = name
+            self._name = name
         else:
             raise ValueError("Invalid product name")
 
+        if Product.cost_price_validation(cost_price):
+            self.cost_price = cost_price
+        else:
+            raise ValueError("Invalid product cost")
 
-        self.name = name
-        self.cost_price = cost_price
+
         self.retail_price = retail_price
         self.quantity = quantity
 
     def __str__(self):
-        print(f"id = {self.id}, name = {self.name}, cost_price = {self.cost_price}, retail_price = {self.retail_price}, quantity = {self.quantity}")
+        print(f"id = {self._id}, name = {self._name}, cost_price = {self.cost_price}, retail_price = {self.retail_price}, quantity = {self.quantity}")
 
     def __repr__(self):
-        print(f"id = {self.id}, name = {self.name}, cost_price = {self.cost_price}, retail_price = {self.retail_price}, quantity = {self.quantity}")
+        print(f"id = {self._id}, name = {self._name}, cost_price = {self.cost_price}, retail_price = {self.retail_price}, quantity = {self.quantity}")
 
 
     @staticmethod
     def id_validation(id):
         if id < 0:
-            return False
+            return False, "ID cannot be negative"
 
         if id is None:
-            return False
+            return False, "No ID present"
 
         else:
             return True
@@ -42,6 +47,14 @@ class Product:
         else:
             return True
 
+    @staticmethod
+    def cost_price_validation(cost_price):
+        if cost_price is None:
+            return False
+        if cost_price < 0:
+            return False
+        else:
+            return True
     '''
         Code for the Product class goes here
         Product has:
@@ -65,8 +78,33 @@ class Book(Product):
         one or more genres (these should be stored in a list)
     '''
 if __name__ == "__main__":
-    print("Testing ID as -1, should come with error")
+    print("Print, should all be good, no errors")
     try:
-        product1 = Product(-1,"wheel",1,1,1)
+        product1 = Product(10,"Wheel",1,1,1)
+    except ValueError as e:
+        print(e)
+
+
+    print("Invalid ID, should show error")
+    try:
+        product2 = Product(-1,"wheel",1,1,1)
+    except ValueError as e:
+        print(e)
+
+    print("Invalid Name, should show error")
+    try:
+        product3 = Product(1,None,1,1,1)
+    except ValueError as e:
+        print(e)
+
+    print("Invalid Cost Price, should show error, minus price")
+    try:
+        product4 = Product(1,"Wheel",-10,1,1)
+    except ValueError as e:
+        print(e)
+
+    print("Invalid Retail Price, should show error, price = None")
+    try:
+        product5 = Product(1,"Wheel",None,1,1)
     except ValueError as e:
         print(e)
