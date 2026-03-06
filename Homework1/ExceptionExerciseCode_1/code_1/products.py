@@ -15,11 +15,11 @@ class Product:
         else:
             raise ValueError(error_msg)
 
-        if Product.cost_price_validation(cost_price):
-            self.cost_price = cost_price
+        valid, error_msg = Product.cost_price_validation(cost_price)
+        if valid:
+            self._cost_price = cost_price
         else:
-            raise ValueError("Invalid product cost")
-
+            raise ValueError(error_msg)
 
         self.retail_price = retail_price
         self.quantity = quantity
