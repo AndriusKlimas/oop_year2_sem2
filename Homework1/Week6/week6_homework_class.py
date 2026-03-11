@@ -5,6 +5,8 @@ class Student():
 
     __id_prefix = "D00"
 
+    student_dict = {}
+
     def __init__(self, student_id:str, name:str, subject:str, grade:int):
         valid, error_msg = Student.validate_id(student_id)
         if valid:
@@ -12,10 +14,16 @@ class Student():
         else:
             raise Exception(error_msg)
 
+        valid, error_msg = Student.validate_grade(grade)
+        if valid:
+            self._grade = grade
+        else:
+            raise Exception(error_msg)
+
 
         self._name = name
         self._subject = subject
-        self._grade = grade
+
 
 
     #Returning the iteams so that they can be used
@@ -102,5 +110,16 @@ class Student():
         return True, None
 
 
+    @staticmethod
+    def add_grade(subject:str, grade:int, student_dict: dict) -> Student:
+        grade = Student.validate_grade(grade)
 
+        for key, value in student_dict.values():
+            if subject != key:
+                student_dict[subject] = grade
+                return True, None
+
+
+            else:
+                return False, "Grade already exists, for this subject " + {subject}
 
