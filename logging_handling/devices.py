@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+
+class DeviceInterfaceError(ValueError):
+    pass
+
+
+
 class Device:
     def __init__(self, name:str, interface_type:str):
         #checking if anything in it
@@ -12,8 +18,11 @@ class Device:
         self.__component = []
 
     def add_component(self, component: Component) -> None:
+        if not component.get_interface():
+            raise ValueError("Interface cannot be None")
+
         if component.get_interface() != self._interface_type:
-            raise ValueError(f"Component {component.get_name()} employs incorrect interface")
+            raise DeviceInterfaceError(f"Component {component.get_name()} employs incorrect interface")
 
         self.__component.append(component)
 
