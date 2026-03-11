@@ -21,7 +21,7 @@ class Student():
         #Student id must start with a specific begining
         valid, error_msg = Student.validate_id(student_id)
         if valid:
-            self.student_id = student_id
+            self._student_id = student_id
         else:
             raise Exception(error_msg)
 
@@ -123,27 +123,45 @@ class Student():
         return not self._student_id == other._student_id
 
     def __hash__(self) -> int:
-        return hash(self._student_id)
+        return hash(self._grade)
 
     def __lt__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._student_id < other._student_id
+        return self._grade < other._grade
 
     def __le__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._student_id <= other._student_id
+        return self._grade <= other._grade
 
     def __gt__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._student_id > other._student_id
+        return self._grade > other._grade
 
     def __ge__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
         return self._grade >= other._grade
+
+
+    def __str__(self):
+        '''
+        Returns the string representation of the student
+        return:
+         a text representation of the student object
+        '''
+        return f"{self.get_student_id()} {self.get_name()} {self.get_subject()} {self.get_grade()}"
+
+    def __repr__(self):
+        '''
+        returns a developer friendly string representation of the student
+        return:
+        a texted string representation of the student object
+        '''
+
+        return f"{self.__class__.__name__}{{_student_id={self._student_id},name={self.get_name()},subject={self.get_subject()},grade={self._grade}"
 
 
 
@@ -176,7 +194,7 @@ class Student():
 
 
     @staticmethod
-    def add_grade(subject:str, grade:int, student_dict: dict) -> Student:
+    def add_grade(subject:str, grade:int, student_dict: dict) -> tuple[bool, str] | tuple[bool, None]:
         grade = Student.validate_grade(grade)
 
         for key, value in student_dict.values():
