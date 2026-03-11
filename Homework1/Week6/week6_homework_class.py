@@ -6,7 +6,13 @@ class Student():
     __id_prefix = "D00"
 
     def __init__(self, student_id:str, name:str, subject:str, grade:int):
-        self._student_id = student_id
+        valid, error_msg = Student.validate_id(student_id)
+        if valid:
+            self._id = student_id
+        else:
+            raise Exception(error_msg)
+
+
         self._name = name
         self._subject = subject
         self._grade = grade
@@ -79,6 +85,20 @@ class Student():
         if not student_id.startswith(Student.__id_prefix):
             return False, "Student ID must start with " + Student.__id_prefix
         #if both pass
+        return True, None
+
+
+    @staticmethod
+    def validate_grade(grade:int) -> tuple[bool, str] | tuple[bool, None]:
+        if grade is None:
+            return False, "Grade cannot be None"
+
+        if grade < 0 or grade > 100:
+            return False, "Grade must be between 0 and 100"
+
+        if not grade.isdigit():
+            return False, "Grade must be an integer or float"
+
         return True, None
 
 
