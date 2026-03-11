@@ -1,21 +1,26 @@
 from types import NotImplementedType
 
 
+class InvalidIDError(Exception):
+    pass
+
+class InvalidGradeError(ValueError):
+    pass
+
+
 class Student():
 
-    __id_prefix = "D00"
+    __id_prefix = "D0"
 
-    student_dict = {}
 
-    def __init__(self, student_id:str, name:str, subject:str, grade:int):
+    def __init__(self, student_id:str, name:str, subject_grade:dict):
         '''Creats an instance of student containing a specific value.
         if value does not meet requirements, then error is raised
 
         Args:
             student_id (str): the id of the student
             name (str): the name of the student
-            subject (str): the subject of the student
-            grade (int): the grade of the student
+            subject_grade (dict): the subject grade
         '''
 
         #Student id must start with a specific begining
@@ -23,20 +28,21 @@ class Student():
         if valid:
             self._student_id = student_id
         else:
-            raise Exception(error_msg)
+            raise InvalidIDError(error_msg)
 
-        #Grade must be a valid number
-        valid, error_msg = Student.validate_grade(grade)
-        if valid:
-            self._grade = grade
-        else:
-            raise Exception(error_msg)
+        # Grade must be a valid number
+        # valid, error_msg = Student.validate_grade(grade)
+        # if valid:
+        #     self._grade = grade
+        # else:
+        #     raise InvalidGradeError(error_msg)
 
         # NO logic for name structure - no validation needed
         self._name = name
+        self._subject_grade = subject_grade
 
-        # No logic for subject structure - no validation needed
-        self._subject = subject
+        # # No logic for subject structure - no validation needed
+        # self._subject = subject
 
 
 
@@ -60,23 +66,23 @@ class Student():
         '''
         return self._name
 
-    def get_subject(self) -> str:
-        '''
-        Returns the subject of the student
-        return:
-        Returns the current subject(as its stored)
-        '''
+    # def get_subject(self) -> str:
+    #     '''
+    #     Returns the subject of the student
+    #     return:
+    #     Returns the current subject(as its stored)
+    #     '''
+    #
+    #     return self._subject
 
-        return self._subject
-
-    def get_grade(self) -> int:
-        '''
-        Returns the grade of the student
-
-        return:
-        Returns the current grade(as its stored)
-        '''
-        return self._grade
+    # def get_grade(self) -> float:
+    #     '''
+    #     Returns the grade of the student
+    #
+    #     return:
+    #     Returns the current grade(as its stored)
+    #     '''
+    #     return self._grade
 
     @staticmethod
     def get_prefix() -> str:
@@ -123,27 +129,27 @@ class Student():
         return not self._student_id == other._student_id
 
     def __hash__(self) -> int:
-        return hash(self._grade)
+        return hash(self._student_id)
 
     def __lt__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._grade < other._grade
+        return self._student_id < other._student_id
 
     def __le__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._grade <= other._grade
+        return self._student_id <= other._student_id
 
     def __gt__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._grade > other._grade
+        return self._student_id > other._student_id
 
     def __ge__(self, other) -> NotImplementedType:
         if not isinstance(other, Student):
             return NotImplemented
-        return self._grade >= other._grade
+        return self._student_id >= other._student_id
 
 
     def __str__(self):
@@ -152,7 +158,7 @@ class Student():
         return:
          a text representation of the student object
         '''
-        return f"{self.get_student_id()} {self.get_name()} {self.get_subject()} {self.get_grade()}"
+        return f"{self.get_student_id()} {self.get_name()}{self._subject_grade} "
 
     def __repr__(self):
         '''
@@ -161,7 +167,7 @@ class Student():
         a texted string representation of the student object
         '''
 
-        return f"{self.__class__.__name__}{{_student_id={self._student_id},name={self.get_name()},subject={self.get_subject()},grade={self._grade}"
+        return (f"{self.__class__.__name__}{{_student_id={self._student_id},name={self.get_name()},{self._subject_grade}")
 
 
 
@@ -180,29 +186,34 @@ class Student():
 
 
     @staticmethod
-    def validate_grade(grade:int) -> tuple[bool, str] | tuple[bool, None]:
+    def validate_grade(grade) -> tuple[bool, str] | tuple[bool, None]:
         if grade is None:
             return False, "Grade cannot be None"
+
+        try:
+            grade = float(grade)
+        except (ValueError, TypeError):
+            return False, "Grade must be an integer or float"
 
         if grade < 0 or grade > 100:
             return False, "Grade must be between 0 and 100"
 
-        if not grade.isdigit():
-            return False, "Grade must be an integer or float"
 
         return True, None
 
 
     @staticmethod
-    def add_grade(subject:str, grade:int, student_dict: dict) -> tuple[bool, str] | tuple[bool, None]:
-        grade = Student.validate_grade(grade)
+    def add_grade(subject:str, grade:float, student_dict: dict) -> tuple[bool, str] | tuple[bool, None]:
+        # Validate the grade first
+        valid, error_msg = Student.validate_grade(grade)
+        if not valid:
+            return False, error_msg
 
-        for key, value in student_dict.values():
-            if subject != key:
-                student_dict[subject] = grade
-                return True, None
+        # Check if subject already exists in the dictionary
+        if subject in student_dict:
+            return False, "Grade already exists for this subject: " + subject
 
-
-            else:
-                return False, "Grade already exists, for this subject " + {subject}
+        # Add the grade for this subject
+        student_dict[subject] = grade
+        return True, None
 
