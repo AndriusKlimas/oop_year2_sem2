@@ -73,12 +73,14 @@ def pulling_file():
 def find_user():
     name_id = input("Enter the student name: ").lower()
     found = False
-
+    #For the students name and id
     for student_id, student in student_dict.items():
         if student.get_name().lower() == name_id:
             print(f"Student found!")
             print(f"ID: {student.get_student_id()}, Name: {student.get_name()}")
             print(f"Subjects and Grades:")
+            #Need to search throught the subject_grades dict to get them sepretly, cause i have no clue how to do it
+            # any other way
             for subject, grade in student._subject_grade.items():
                 print(f"  - {subject}: {grade}")
             found = True
