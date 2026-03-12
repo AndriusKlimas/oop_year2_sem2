@@ -70,6 +70,22 @@ def pulling_file():
             not_running = True
 
 
+def find_user():
+    name_id = input("Enter the student name: ").lower()
+    found = False
+
+    for student_id, student in student_dict.items():
+        if student.get_name().lower() == name_id:
+            print(f"Student found!")
+            print(f"ID: {student.get_student_id()}, Name: {student.get_name()}")
+            print(f"Subjects and Grades:")
+            for subject, grade in student._subject_grade.items():
+                print(f"  - {subject}: {grade}")
+            found = True
+            break
+
+    if not found:
+        print("Student not found.")
 
 
 
@@ -83,7 +99,7 @@ if __name__ == "__main__":
             case "1":
                 pulling_file()
             case "2":
-                print("in progress")
+                find_user()
             case "3":
                 print("Goodbye!")
                 keepgoing = False
