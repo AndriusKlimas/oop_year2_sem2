@@ -3,12 +3,10 @@ from week6_homework_class import Student
 
 student_dict = {}
 
-NotRunning = False
-
 
 def pulling_file():
-    NotRunning = False
-    while not NotRunning:
+    not_running = False
+    while not not_running:
         filename = input("Enter the filename: ")
 
         try:
@@ -62,13 +60,14 @@ def pulling_file():
                         student_dict[student_id] = student
 
                 # Successfully read the file, exit the loop
-                NotRunning = True
+                print(f"\nSuccessfully loaded {len(student_dict)} student(s).")
+                not_running = True
 
         except FileNotFoundError:
             print("File not found. Please try again.")
         except Exception as e:
             print(f"An error occurred: {e}")
-            NotRunning = True
+            not_running = True
 
 
 
@@ -76,16 +75,19 @@ def pulling_file():
 
 
 if __name__ == "__main__":
-    want = input("Please enter what you would like to do: \n 1. pull file \n 2. search for student \n 3. quit \n ")
+    keepgoing = True
+    while keepgoing:
+        want = input("\nPlease enter what you would like to do:\n 1. pull file\n 2. search for student\n 3. quit\n> ")
 
-    match want:
-        case "1":
-            pulling_file()
-        case "2":
-            print("in progress")
-        case "3":
-            quit()
+        match want:
+            case "1":
+                pulling_file()
+            case "2":
+                print("in progress")
+            case "3":
+                print("Goodbye!")
+                keepgoing = False
+            case _:
+                print("Invalid option. Please choose 1, 2, or 3.")
 
 
-
-print(student_dict)
