@@ -1,3 +1,12 @@
+import logging
+
+def configure_logging(logging_level:int):
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler])
+
+
 def display(data):
     print("Product details:")
     print(f"\tID: {data[0]}")
@@ -11,6 +20,8 @@ def display(data):
         print(f"\tGenre(s): {data[6]}")
 
 
+configure_logging(logging.INFO)
+logger = logging.getLogger()
 valid = False
 count = 0
 while not valid:
@@ -35,30 +46,35 @@ while not valid:
                 try:
                     data.append(components[1])
                 except IndexError as e:
+                    logger.info("Component 1 not found")
                     print("Component not found")
                     continue
 
                 try:
                     data.append(components[2])
                 except IndexError as e:
+                    logger.info("Component 2 not found")
                     print("Component not found")
                     continue
 
                 try:
                     data.append(float(components[3]))
                 except IndexError as e:
+                    logger.info("Component 3 not found")
                     print("Component not found")
                     continue
 
                 try:
                     data.append(float(components[4]))
                 except IndexError as e:
+                    logger.info("Component 4 not found")
                     print("Component not found")
                     continue
 
                 try:
                     data.append(float(components[5]))
                 except IndexError as e:
+                    logger.info("Component 5 not found")
                     print("Component not found")
                     continue
 
@@ -71,6 +87,7 @@ while not valid:
                 display(data)
     except FileNotFoundError as e:
         if count < 1:
+            logger.info("File not found")
             print("File not found")
         count += 1
 
