@@ -9,7 +9,8 @@ def configure_logging(logging_level:int):
     console_handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler],
+    console_handler.setFormatter(formatter)
+    logging.basicConfig(level=logging_level, handlers=[console_handler],
                         filename="week7.log", filemode="a", encoding="utf-8" )
 
 class InvalidIDError(Exception):

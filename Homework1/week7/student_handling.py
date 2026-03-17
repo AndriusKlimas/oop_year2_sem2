@@ -7,6 +7,8 @@ import logging
 def configure_logging(logging_level:int):
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
 
     logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler],
                         filename="week7_handling.log", filemode="a", encoding="utf-8")
