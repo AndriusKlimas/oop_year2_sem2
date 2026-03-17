@@ -26,6 +26,7 @@ class Student:
         self._student_id = student_id.upper()
 
         if not name:
+            logger.info("No student name Provided")
             raise ValueError("Invalid name provided")
         self._name = name
 
@@ -56,20 +57,25 @@ class Student:
     @staticmethod
     def __validate_id(student_id: str) -> None:
         if not student_id:
+            logger.info("No student ID Provided")
             raise ValueError("No value provided for student ID")
 
         if not student_id.upper().startswith(Student.ID_PREFIX):
+            logger.info("Prefix not in student ID")
             raise InvalidIDError(f"Student ID does not start with {Student.ID_PREFIX}")
 
     @staticmethod
     def validate_grade(grade: int) -> None:
         if not grade:
+            logger.info("No grade provided")
             raise ValueError("No value provided for grade")
 
         if not isinstance(grade, int) and not isinstance(grade, float):
+            logger.info("Grade must be an integer or float")
             raise InvalidGradeError("Non-numeric data provided for grade")
 
         if grade < 0 or grade > 100:
+            logger.info("Grade must be between 0 and 100")
             raise InvalidGradeError(f"Grade supplied ({grade}) is outside allowable range for grades. Must be >=0 and <=100")
 
     def add_grade(self, subject: str, grade: int | float) -> bool:
