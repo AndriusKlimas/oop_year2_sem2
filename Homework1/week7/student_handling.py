@@ -8,7 +8,8 @@ def configure_logging(logging_level:int):
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
 
-    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler])
+    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler],
+                        filename="week7_handling.log", filemode="a")
 
 
 def parse_student(line: str) -> Student:
