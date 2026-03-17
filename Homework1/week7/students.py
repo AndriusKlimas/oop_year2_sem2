@@ -1,6 +1,14 @@
 from __future__ import annotations
 from types import NotImplementedType
+import logging
 
+
+
+def configure_logging(logging_level:int):
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler])
 
 class InvalidIDError(Exception):
     pass
@@ -75,3 +83,7 @@ class Student:
 
     def get_grades(self) -> dict[str, int|float]:
         return self.__grades.copy()
+
+if __name__ == "__main__":
+    configure_logging(logging.INFO)
+    logger = logging.getLogger()

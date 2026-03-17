@@ -1,6 +1,14 @@
 from students import Student
 from students import InvalidIDError
 from students import InvalidGradeError
+import logging
+
+
+def configure_logging(logging_level:int):
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    logging.basicConfig(format="%(asctime)s: %(message)s", level=logging_level, handlers=[console_handler])
 
 
 def parse_student(line: str) -> Student:
@@ -74,6 +82,8 @@ def display_students(student_dict: dict[str, Student]) -> None:
 
 
 if __name__ == "__main__":
+    configure_logging(logging.INFO)
+    logger = logging.getLogger()
     filename = input("Please enter filename for student data file: ")
     try:
         students = parse_student_file(filename)
