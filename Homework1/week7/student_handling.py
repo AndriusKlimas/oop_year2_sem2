@@ -14,6 +14,7 @@ def configure_logging(logging_level:int):
 def parse_student(line: str) -> Student:
     components = line.split(",")
     if len(components) != 4:
+        logger.error("Invalid format of student input, too little/many fields provided")
         raise ValueError(f"Malformed record on line: {line}")
 
     student_id = components[0].strip().upper()
@@ -28,6 +29,7 @@ def parse_student(line: str) -> Student:
         else:
             grade = int(components[3].strip())
     except ValueError as e:
+        logger.error("Location of grade is not a number")
         raise InvalidGradeError("Non-numeric grade data supplied.")
 
     student.add_grade(subject, grade)
@@ -54,12 +56,15 @@ def parse_student_file(filename: str) -> dict[str, Student]:
                         existing_student.add_grade(subject, grade)
 
             except InvalidIDError as e:
+                logger.error(f"Invalid student ID: {line_no}")
                 print(f"InvalidIDError: Invalid student ID provided on line {line_no}")
                 print(f"Error: {e.args[0]}")
             except InvalidGradeError as e:
+                logger.error(f"Invalid student grade: {line_no}")
                 print(f"InvalidGradeError: Invalid grade provided on line {line_no}")
                 print(f"Error: {e.args[0]}")
             except ValueError as e:
+                logger.error(f"Invalid info provided on following line: {line_no}")
                 print(f"An error occurred parsing line {line_no}")
                 print(f"Error: {e.args[0]}")
 
