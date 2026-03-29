@@ -7,9 +7,24 @@ class Author:
         return f'{self.f_name} {self.l_name}'
 
 
+
     @classmethod
     def from_dict(cls, data):
-        return cls(data["f_name"], data["l_name"])
+        if data["type"] != cls.__name__:
+            raise TypeError("Author's data must be of type Author")
+
+        fname = data['f_name']
+        lname = data['l_name']
+        return cls(fname, lname)
+
+
+    def to_dict(self):
+        data = {}
+        data["type"] = self.__class__.__name__
+
+        data["f_name"] = self.f_name
+        data["l_name"] = self.l_name
+        return data
 
 
 
