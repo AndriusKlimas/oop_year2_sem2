@@ -40,6 +40,7 @@ class TicketService:
             ticketing_system.assign_ticket(agent, self.__assigned_tickets ,new_ticket)
 
             self.__unassigned_tickets.pop(0)
+            return "done"
 
         except Exception as e:
             return "message"
