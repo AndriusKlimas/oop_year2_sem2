@@ -119,13 +119,10 @@ def assign_ticket(assigned_agent: str, assigned_tickets: dict[str, list[Ticket]]
 
 
 def display_ticket_list(ticket_list: list[Ticket]) -> None:
-    if len(ticket_list) == 0:
-        print("No tickets found")
-        return
-
-    for i, ticket in enumerate(ticket_list, 1):
-        print(f"{i}) {ticket}")
-        logger.info(f"Ticket details viewed: {ticket}")
+    returned_info = TicketService.get_ticket_list()
+    if returned_info is None:
+        print("No ticket list")
+    print(returned_info)
 
 
 def display_agents(ticket_service: TicketService) -> None:

@@ -15,6 +15,12 @@ class TicketService:
         return list(self.__assigned_tickets.keys())
 
 
+    def get_ticket_list(self):
+        if len(self.__assigned_tickets) == 0:
+            return None
+        return list(self.__assigned_tickets.values())
+
+
     def assign_next_ticket(self, agent: str):
         #this will need to check the unassigned dict and then give it to an agent and move it to the assigned queue
         #agent will be passed by the ui
