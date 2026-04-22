@@ -146,28 +146,9 @@ def display_tickets_for_agent(ticket_service: TicketService) -> None:
 
 
 def assign_next_ticket(unassigned_list: list[Ticket], assigned_dict: dict[str, list[Ticket]]) -> None:
-    if len(unassigned_list) == 0:
-        logger.info("No tickets available to be assigned")
-        return
+    agent = input("Please enter agent name: ")
 
-    next_ticket = unassigned_list[0]
-    print(f"Ticket to be assigned: {next_ticket}")
-
-    agent = ""
-    try:
-        agent = input("Please enter agent name to be assigned a ticket: ")
-        # Link to specified agent
-        next_ticket.assign_to(agent)
-        # Add to assigned dictionary
-        assign_ticket(agent, assigned_dict, next_ticket)
-        # Remove from unassigned list - do this last in case something goes wrong along the way
-        unassigned_list.pop(0)
-    except TicketException as e:
-        logger.error(f"Attempting to assign previously assigned ticket: {e}")
-        print(f"Cannot assign ticket - ticket is already assigned to {next_ticket.get_assigned_agent()}")
-    except ValueError as e:
-        logger.error(f"Attempting to assign ticket to illegal agent value: {e}")
-        print(f"Cannot assign ticket - agent \"{agent}\" is invalid. Please try again with a different agent")
+    ticket_service.assign_next_ticket_1(agent)
 
 
 def display_menu() -> None:

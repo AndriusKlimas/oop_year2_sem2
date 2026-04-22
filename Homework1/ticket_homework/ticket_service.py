@@ -1,4 +1,5 @@
 from tickets import Ticket
+from ticketing_system import *
 class TicketService:
     def __init__(self, assigned: dict[str, list[Ticket]] = None, unassigned: list[str] = None):
         self.__assigned_tickets = dict.copy(assigned) if assigned else {}
@@ -26,14 +27,26 @@ class TicketService:
         #agent will be passed by the ui
         #need to get the first itema in the list and assignt the agent to it
         #then remove from unassigned list and then add it to teh assigned dict
-        first_ticket = self.__unassigned_tickets[0]
-        agent1 = Ticket.assign_to(agent)
+        if len(self.__unassigned_tickets) == 0:
+            return None
 
-        if agent1 in self.__assigned_tickets:
-            self.__assigned_tickets[agent].append(first_ticket)
+        new_ticket = self.__unassigned_tickets[0]
+        agent = ""
+        try:
+            agent = input("Please enter agent name to be assigned a ticket: ")
+            # Link to specified agent
+            new_ticket.assign_to(agent)
+
+            ticketing_system.assign_ticket(agent, self.__assigned_tickets ,new_ticket)
+
             self.__unassigned_tickets.pop(0)
-        else:
-            self.__assigned_tickets[agent] = [first_ticket]
+
+        except Exception as e:
+            return "message"
+
+
+
+
 
 
 
