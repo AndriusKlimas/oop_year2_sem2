@@ -148,7 +148,12 @@ def display_tickets_for_agent(ticket_service: TicketService) -> None:
 def assign_next_ticket(unassigned_list: list[Ticket], assigned_dict: dict[str, list[Ticket]]) -> None:
     agent = input("Please enter agent name: ")
 
-    ticket_service.assign_next_ticket_1(agent)
+    info = ticket_service.assign_next_ticket_1(agent)
+
+    if info is None:
+        print("No tickets can be assigned.")
+
+    print(info)
 
 
 def display_menu() -> None:
