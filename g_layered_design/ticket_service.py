@@ -1,38 +1,50 @@
+import logging
+
 from tickets import Ticket
+
+logger = logging.getLogger(__name__)
+
 class TicketService:
-    def __init__(self, assigned: dict[str, list[Ticket]] = None, unassigned: list[str] = None):
+    def __init__(self, assigned: dict[str, list[Ticket]] = None, unassigned: list[Ticket] = None):
         self.__assigned_tickets = dict.copy(assigned) if assigned else {}
         self.__unassigned_tickets = list.copy(unassigned) if unassigned else []
 
-    def get_tickets_for_agent(self, agent: str):
+    def get_tickets_for_agent(self, agent: str) -> list[Ticket] | None:
         if agent.lower() not in self.__assigned_tickets:
             return None
 
         return  self.__assigned_tickets[agent.lower()]
 
-
-    def get_agents(self):
+    def get_agents(self) -> list[str]:
         return list(self.__assigned_tickets.keys())
 
+    def get_unassigned_tickets(self) -> list[Ticket]:
+        return list(self.__unassigned_tickets)
 
-    def assign_next_ticket(self, agent: str):
-        #this will need to check the unassigned dict and then give it to an agent and move it to the assigned queue
-        #agent will be passed by the ui
-        #need to get the first itema in the list and assignt the agent to it
-        #then remove from unassigned list and then add it to teh assigned dict
-        first_ticket = self.__unassigned_tickets[0]
-        agent1 = Ticket.assign_to(agent)
+    def _assign_ticket(self, agent: str, ticket: Ticket) -> None:
+        # Link ticket to specified agent
+        ticket.assign_to(agent)
 
-        if agent1 in self.__assigned_tickets:
-            self.__assigned_tickets[agent].append(first_ticket)
-            self.__unassigned_tickets.pop(0)
-        else:
-            self.__assigned_tickets[agent] = [first_ticket]
+        # Place ticket in list for assigned agent within the assigned dictionary
+        # Get list for agent (default to empty list if there isn't one)
+        agent_list = self.__assigned_tickets.setdefault(agent.lower(), [])
+        # Adds ticket to agent's list
+        agent_list.append(ticket)
 
+        # Compliance logging - ticket stored and assigned
+        logger.info(f"Assigned ticket to {agent} - ticket details: {ticket}")
 
+    def assign_next_ticket(self, agent: str) -> bool:
+        if not agent:
+            raise ValueError("Cannot assign to a blank/None agent name")
 
+        if len(self.__unassigned_tickets) == 0:
+            return False
 
-
-
-        print("Under development")
-
+        # Get next ticket from the available list of unassigned tickets
+        next_ticket = self.__unassigned_tickets[0]
+        # Add to assigned dictionary
+        self._assign_ticket(agent, next_ticket)
+        # Remove from unassigned list - do this last in case something goes wrong along the way
+        self.__unassigned_tickets.pop(0)
+        return True
