@@ -49,3 +49,10 @@ class TicketDataAccess:
         except Exception as e:
             logger.warning(f"line is skipped: {text}")
             return None
+
+    def build_ticket(self, ticket_id, title, desc, status, assigned_to):
+        ticket = Ticket(ticket_id, title, desc)
+        ticket.update_status(status)
+        if assigned_to != " ":
+            ticket.assign_to(assigned_to)
+        return ticket
