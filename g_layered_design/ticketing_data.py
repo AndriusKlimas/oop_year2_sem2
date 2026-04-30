@@ -1,9 +1,19 @@
+import os
 import logging
 from tickets import Ticket, FeatureRequest, TicketException
 
 logger = logging.getLogger(__name__)
 
 class TicketDataAccess:
+
+    def __init__(self,filename):
+        if not filename:
+            raise ValueError('filename cannot be None')
+
+        if not os.path.exists(filename):
+            raise FileNotFoundError("No such file: '%s'" % filename)
+
+        self._filename = filename
 
     def read_file(self, filename: str) -> tuple[list[Ticket], dict[str, list[Ticket]]]:
         unassigned_tickets = []

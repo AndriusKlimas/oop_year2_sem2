@@ -5,7 +5,7 @@ import logging
 import logging.config
 import json
 from ticket_service import TicketService
-from ticket_data_access import TicketDataAccess   # <-- NEW IMPORT
+from ticketing_data import TicketDataAccess   # <-- NEW IMPORT
 
 def configure_logging_json() -> None:
     with open("logging_config.json") as f:
@@ -22,8 +22,8 @@ def load_ticket_model() -> TicketService | None:
     try:
         filename = input("Please enter ticket data filename: ")
 
-        data_access = TicketDataAccess()
-        unassigned, assigned = data_access.read_file(filename)
+        data_access = TicketDataAccess(filename)
+        unassigned, assigned = data_access.read_file()
 
         ticket_service = TicketService(assigned, unassigned)
         return ticket_service
