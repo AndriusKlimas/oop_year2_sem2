@@ -56,3 +56,21 @@ class TicketDataAccess:
         if assigned_to != " ":
             ticket.assign_to(assigned_to)
         return ticket
+
+    def build_feature_request(self, ticket_id, title, desc, status, assigned_to, requested, approval, line):
+        ticket = FeatureRequest(ticket_id, title, desc, requested)
+        ticket.update_status(status)
+        if assigned_to != "":
+            ticket.assign_to(assigned_to)
+
+        match approval.upper():
+            case "APPROVED":
+                ticket.approve()
+            case "REJECTED":
+                ticket.reject()
+            case "PENDING":
+                pass
+            case _:
+                raise TicketException(f"Illegal approval status ({approval}) in line: {line}")
+
+        return ticket
